@@ -1,0 +1,26 @@
+name: Deploy Lambda from S3 (Manual)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write   # REQUIRED for OIDC
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Configure AWS credentials using OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::749174759054:role/DeployerRole
+          aws-region: us-east-1
+
+      - name: Update Lambda code from S3
+        run: |
+          aws lambda update-function-code \
+            --function-name test-hello-world \
+            --s3-bucket lambda-zip-bucket-for-testing-jan \
+            --s3-key hello_world.zip
