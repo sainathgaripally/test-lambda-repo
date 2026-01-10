@@ -49,6 +49,13 @@ jobs:
         run: |
           echo "Lambda test-hello-world CODE_ETAG: ${{ steps.hw_current.outputs.etag }}"
 
+      - name: Deployment decision
+        run: |
+          if [ "${{ steps.hw_hash.outputs.etag }}" = "${{ steps.hw_current.outputs.etag }}" ]; then
+            echo "No deployment needed — code already up to date."
+          else
+            echo "Deployment required — new code detected in S3."
+          fi
 
       - name: Deploy hello_world if changed
         if: steps.hw_hash.outputs.etag != steps.hw_current.outputs.etag
