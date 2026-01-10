@@ -1,5 +1,5 @@
 def lambda_handler(event, context):
     return {
         "statusCode": 200,
-        "body": "Version1 of my application3..."
+        "body": "Test application1"
     }
