@@ -30,6 +30,11 @@ jobs:
 
           echo "etag=$ETAG" >> $GITHUB_OUTPUT
 
+      - name: Print S3 hello_world hash
+        run: |
+          echo "S3 hello_world.zip ETag: ${{ steps.hw_hash.outputs.etag }}"
+
+
       - name: Get deployed hello_world hash
         id: hw_current
         run: |
@@ -39,6 +44,11 @@ jobs:
             --output text 2>/dev/null || echo "NONE")
 
           echo "etag=$CURRENT" >> $GITHUB_OUTPUT
+
+      - name: Print Lambda hello_world deployed hash
+        run: |
+          echo "Lambda test-hello-world CODE_ETAG: ${{ steps.hw_current.outputs.etag }}"
+
 
       - name: Deploy hello_world if changed
         if: steps.hw_hash.outputs.etag != steps.hw_current.outputs.etag
